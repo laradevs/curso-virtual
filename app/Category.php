@@ -2,21 +2,21 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\{Model,SoftDeletes};
+use Storage;
+use Illuminate\Http\UploadedFile;
 class Category extends Model
 {
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id',
         'name',
         'description',
-        'cover',
-        'deleted_at',
+        'cover'
     ];
 
     /**
@@ -25,5 +25,20 @@ class Category extends Model
     public function posts()
     {
         return $this->hasMany(\App\Post::class);
+    }
+
+    public function setCoverAttribute($value){
+        if($value instanceof UploadedFile){
+            $namefile=uniqid().'.'.$value->extension();
+            Storage::put($namefile,$value,'public');
+            $this->attributes['cover'] = $namefile;
+        }
+    }
+
+    public function scopeName($query,$value){
+        return $query->when(strlen($value)>=3,function($query) use($value){
+            return $query->where('name','like','%'.$value.'%');
+        });
+        
     }
 }
