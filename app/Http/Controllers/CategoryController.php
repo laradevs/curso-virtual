@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         return view('category.index')->with([
-            'items'=>Category::name(
+            'items'=>Category::withCount('posts')->name(
                 request()->get('filter')
             )->paginate(3)
         ]);
@@ -40,6 +40,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
        Category::create($request->all());
+       session()->flash('success','Registro Guardado Correctamente');
        return redirect()->route('category.index');
     }
 
@@ -76,6 +77,7 @@ class CategoryController extends Controller
     {
         $category->fill($request->all());
         $category->save();
+        session()->flash('success','Registro Actualizado Correctamente');
         return redirect()->route('category.index');
     }
 
@@ -88,6 +90,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
+        session()->flash('success','Registro Eliminado Correctamente');
         return redirect()->route('category.index');
     }
 }

@@ -19,6 +19,15 @@ class Category extends Model
         'cover'
     ];
 
+    
+    protected $appends = ['image_url']; //$item->image_url
+
+    public function getImageUrlAttribute()
+    {
+        return url('storage/categories/'.$this->cover??'none.jpg');
+    }
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -29,8 +38,10 @@ class Category extends Model
 
     public function setCoverAttribute($value){
         if($value instanceof UploadedFile){
-            $namefile=uniqid().'.'.$value->extension();
-            Storage::put($namefile,$value,'public');
+            $namefile = uniqid() . '.'.$value->extension();
+
+            $value->storeAs('categories', $namefile,'public');
+            
             $this->attributes['cover'] = $namefile;
         }
     }

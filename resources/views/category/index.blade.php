@@ -9,6 +9,8 @@
 		      <th scope="col">#</th>
 		      <th scope="col">Imagen</th>
 		      <th scope="col">Nombres</th>
+		        <th scope="col">Artículos</th>
+
 		      <th scope="col">Acciones</th>
 		    </tr>
 		  </thead>
@@ -16,8 +18,11 @@
 		  	@forelse($items as $item)
 			    <tr>
 			      <th scope="row">{{$item->id}}</th>
-			      <td>{{$item->cover}}</td>
+			      <td>
+			      	<img class="img-thumbnail" width="130px" src="{{$item->image_url}}"/>
+			      </td>
 			      <td>{{$item->name}}</td>
+			      <td>{{$item->posts_count}}</td>
 			      <td>
 			      	{!!Form::open(['method'=>'DELETE','route'=>['category.destroy',$item]])!!}
 			      		<a href="{{route('category.edit',$item)}}" class="btn btn-primary btn-sm">Editar</a>

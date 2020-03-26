@@ -21,4 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/category','CategoryController');
+Route::group(['middleware'=>'auth'],function(){
+	Route::resource('/category','CategoryController');
+	Route::resource('/post','PostController');
+});

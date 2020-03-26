@@ -1,0 +1,28 @@
+.alertFooter {
+  background: #36A2CD;
+  display: block;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  text-align: center;
+  padding: 10px 0px;
+  width: 100%;
+  z-index: 99999;
+}
+
+.alertFooter-info {
+  background: #36A2CD;
+}
+
+.alertFooter-danger {
+  background: #FC4B6C;
+}
+
+.alertFooter span,
+.alertFooterInfo span {
+  color: #fff;
+  text-shadow: 1px 1px 0px #000;
+  font-size: 18px;
+  font-weight: bold;
+}
+

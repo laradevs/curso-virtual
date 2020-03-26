@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+use App\{Post,Category};
 use Illuminate\Http\Request;
-
+use App\Http\Requests\CreatePostRequest;
 class PostController extends Controller
 {
     /**
@@ -14,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+       return redirect()->route('home');
     }
 
     /**
@@ -24,7 +24,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('post.create')->with([
+            'post_count'=>auth()->user()->posts()->count(),
+            'categories'=>Category::pluck('name','id')->toArray()
+        ]);
     }
 
     /**
@@ -33,9 +36,11 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
-        //
+        Post::create($request->validated());
+        session()->flash('success','Artículo publicado correctamente');
+        return redirect()->route('home');
     }
 
     /**
@@ -46,7 +51,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+       return view('post.show',compact('post'));
     }
 
     /**
@@ -57,7 +62,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+         return view('post.edit',compact('post'))
+         ->with([
+            'post_count'=>auth()->user()->posts()->count(),
+            'categories'=>Category::pluck('name','id')->toArray()
+        ]);
     }
 
     /**
@@ -67,9 +76,12 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(CreatePostRequest $request, Post $post)
     {
-        //
+        $post->fill($request->validated());
+        $post->save();
+        session()->flash('success','Artículo actualizado correctamente');
+        return redirect()->route('home');
     }
 
     /**
@@ -80,6 +92,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        session()->flash('success','Artículo eliminado correctamente');
+        return redirect()->route('home');
     }
 }
