@@ -46,8 +46,15 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapGuestRoutes();
     }
+
+    protected function mapGuestRoutes(){
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/guest.php'));
+    }
+
 
     /**
      * Define the "web" routes for the application.

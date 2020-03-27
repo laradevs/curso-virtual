@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\{Post,Category};
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
+use LaraDevs\Fcm\FcmSendJob;
 class PostController extends Controller
 {
     /**
@@ -38,7 +39,10 @@ class PostController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
-        Post::create($request->validated());
+       $post= Post::create($request->validated());
+
+        FcmSendJob::dispatch('Se ha publicado el post '.$request->title,['cqBikp5Yzuc:APA91bHZwNiqZSVn3u3BBP5cmqp77bzTern245Edjg8v-HEuEbAhLnMck0tLFzsVbwQAykHj0G07QDU7P2RLYpVA_dB-761WIYIZ39mx3l9S7gTjyBPE6f0G_u8bC9hVBf_TQ2u2NizX'],route('view_post',$post));
+
         session()->flash('success','Artículo publicado correctamente');
         return redirect()->route('home');
     }
@@ -62,7 +66,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-         return view('post.edit',compact('post'))
+        abort_if($post->user_id!=auth()->user()->id,403);
+        return view('post.edit',compact('post'))
          ->with([
             'post_count'=>auth()->user()->posts()->count(),
             'categories'=>Category::pluck('name','id')->toArray()
@@ -78,6 +83,7 @@ class PostController extends Controller
      */
     public function update(CreatePostRequest $request, Post $post)
     {
+        abort_if($post->user_id!=auth()->user()->id,403);
         $post->fill($request->validated());
         $post->save();
         session()->flash('success','Artículo actualizado correctamente');
@@ -92,6 +98,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        abort_if($post->user_id!=auth()->user()->id,403);
         $post->delete();
         session()->flash('success','Artículo eliminado correctamente');
         return redirect()->route('home');

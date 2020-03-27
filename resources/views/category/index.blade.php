@@ -25,8 +25,14 @@
 			      <td>{{$item->posts_count}}</td>
 			      <td>
 			      	{!!Form::open(['method'=>'DELETE','route'=>['category.destroy',$item]])!!}
-			      		<a href="{{route('category.edit',$item)}}" class="btn btn-primary btn-sm">Editar</a>
-			      		{!!Form::submit('Delete',['class'=>'btn btn-danger btn-sm'])!!}
+			      		@can('edit-category')
+			      			<a href="{{route('category.edit',$item)}}" class="btn btn-primary btn-sm">Editar</a>
+			      		@endcan
+			      		
+			      		@can('delete-category')
+			      			{!!Form::submit('Delete',['class'=>'btn btn-danger btn-sm'])!!}
+			      		@endcan
+			      	
 			      	{!!Form::close()!!}
 			      </td>
 			    </tr>

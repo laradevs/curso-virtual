@@ -11,12 +11,16 @@
         "php": "^7.2.5",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
+        "fruitcake/laravel-telescope-toolbar": "^1.2",
         "guzzlehttp/guzzle": "^6.3",
+        "laradevs/notifications-fcm": "^1.0",
         "laravel/framework": "^7.0",
+        "laravel/telescope": "^3.2",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laraveles/spanish": "^1.4",
         "mtolhuys/laravel-schematics": "^0.10.3",
+        "silber/bouncer": "v1.0.0-rc.7",
         "styde/html": "^1.9"
     },
     "require-dev": {

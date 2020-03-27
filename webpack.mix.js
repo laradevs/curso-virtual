@@ -17,7 +17,7 @@ mix.js(['resources/js/app.js',
    .sass('resources/sass/app.scss', 'public/css');
 
 
-mix.styles(['resources/plugins/editor/summernote.css']
+mix.styles(['resources/plugins/editor/summernote.css','resources/css/custom.css']
 	,'public/css/all.css');
 
 

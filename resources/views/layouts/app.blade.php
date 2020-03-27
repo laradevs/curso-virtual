@@ -22,6 +22,34 @@
 
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+             apiKey: "AIzaSyBw6NWrQEbuBczTENslFlzWLPHRUhBcjLs",
+                authDomain: "laradevs-24889.firebaseapp.com",
+                databaseURL: "https://laradevs-24889.firebaseio.com",
+                projectId: "laradevs-24889",
+                storageBucket: "laradevs-24889.appspot.com",
+                messagingSenderId: "208071546977",
+                appId: "1:208071546977:web:e633220f35bac63b7a7220"
+        };
+        firebase.initializeApp(config);
+        const messaging = firebase.messaging();
+        messaging.requestPermission().then(function () {
+            return messaging.getToken();
+        }).then(function (token) {
+            console.log(token);
+        }).catch(function (err) {
+                console.log('Permission denied', err);
+            });
+        messaging.onMessage(function (payload) {
+            console.log('onMessage: ', payload);
+        });
+    </script>
+
 </head>
 <body>
     <div id="app">
@@ -53,9 +81,12 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('category.index') }}">{{ __('Categorias') }}</a>
-                            </li>
+
+                            @can('index-category')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('category.index') }}">{{ __('Categorias') }}</a>
+                                </li>
+                            @endcan
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
